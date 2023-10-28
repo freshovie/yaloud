@@ -15,12 +15,7 @@ function signUp(event) {
 
   //checking for validation
 
-  if (
-    getName === "" ||
-    getEmail === "" ||
-    getPassword === "" ||
-    getConfirmPassword === ""
-  ) {
+  if (getName === "" || getEmail === "" || getPassword === "" || getConfirmPassword === "") {
     Swal.fire({
       icon: "info",
       text: "All Fields are Required!",
@@ -349,14 +344,18 @@ function createCategory(event) {
   }
 }
 function getCategoryList() {
+
   const getSpin = document.querySelector(".pagemodal");
   getSpin.style.display = "block";
+
   const showItem = document.querySelector(".scroll-object");
   const getToken = localStorage.getItem("admin");
   const myToken = JSON.parse(getToken);
   const token = myToken.token;
+
   const dashHeader = new Headers();
   dashHeader.append("Authorization", `Bearer ${token}`);
+
   const dashMethod = {
     method: "GET",
     headers: dashHeader,
@@ -391,208 +390,16 @@ function getCategoryList() {
     })
     .catch((error) => console.log("error", error));
 }
-let globalId;
-function modalBox(catId, name) {
-  globalId = catId;
-  console.log(name);
-  const showModal = document.getElementById("my-modal3");
-  showModal.style.display = "block";
-  console.log(globalId);
-  const getUpName = document.getElementById("updateName");
-  const getToken = localStorage.getItem("admin");
-  const myToken = JSON.parse(getToken);
-  const token = myToken.token;
-  const dashHeader = new Headers();
-  dashHeader.append("Authorization", `Bearer ${token}`);
-  const dashMethod = {
-    method: "GET",
-    headers: dashHeader,
-  };
-  const url = `https://pluralcodesandbox.com/yorubalearning/api/admin/get_details?category_id=${catId}`;
-  fetch(url, dashMethod)
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
-      getUpName.setAttribute("value", `${result.name}`);
-    })
-    .catch((error) => console.log("error", error));
-}
+
 function closeModal3() {
   const showModal = document.getElementById("my-modal3");
   showModal.style.display = "none";
 }
-function updateCategory(event) {
-  event.preventDefault();
-  const getSpin = document.querySelector(".spin2");
-  getSpin.style.display = "inline-block";
-  const catName = document.getElementById("updateName").value;
-  const catImage = document.getElementById("updateImage").files[0];
-  if (catName === "") {
-    Swal.fire({
-      icon: "info",
-      text: "All Fields Required!",
-      confirmButtonColor: "#2D85DE",
-    });
-    getSpin.style.display = "none";
-  } else {
-    const getToken = localStorage.getItem("admin");
-    const myToken = JSON.parse(getToken);
-    const token = myToken.token;
-    const dashHeader = new Headers();
-    dashHeader.append("Authorization", `Bearer ${token}`);
-    const catData = new FormData();
-    catData.append("name", catName);
-    catData.append("image", catImage);
-    catData.append("category_id", globalId);
-    const dashMethod = {
-      method: "POST",
-      headers: dashHeader,
-      body: catData,
-    };
-    const url =
-      "https://pluralcodesandbox.com/yorubalearning/api/admin/update_category";
-    fetch(url, dashMethod)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        if (result.status === "success") {
-          Swal.fire({
-            icon: "success",
-            text: `${result.message}`,
-            confirmButtonColor: "#2D85DE",
-          });
-          setTimeout(() => {
-            location.reload();
-          }, 3000);
-        } else {
-          Swal.fire({
-            icon: "info",
-            text: `${result.message}`,
-            confirmButtonColor: "#2D85DE",
-          });
-        }
-      })
-      .catch((error) => console.log("error", error));
-  }
-}
-
-function createCategory(event) {
-  event.preventDefault();
-
-  const getSpin = document.querySelector(".spin");
-  getSpin.style.display = "inline-block";
-
-  const catName = document.getElementById("cat").value;
-  const catImage = document.getElementById("imcat").files[0];
-
-  if (catName === "") {
-    Swal.fire({
-      icon: "info",
-      text: "All Fields Required!",
-      confirmButtonColor: "#2D85DE",
-    });
-    getSpin.style.display = "none";
-  } else {
-    const getToken = localStorage.getItem("admin");
-    const myToken = JSON.parse(getToken);
-    const token = myToken.token;
-
-    const dashHeader = new Headers();
-    dashHeader.append("Authorization", `Bearer ${token}`);
-
-    const catData = new FormData();
-    catData.append("name", catName);
-    catData.append("image", catImage);
-
-    const dashMethod = {
-      method: "POST",
-      headers: dashHeader,
-      body: catData,
-    };
-
-    const url =
-      "https://pluralcodesandbox.com/yorubalearning/api/admin/create_category";
-
-    fetch(url, dashMethod)
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.status === "success") {
-          Swal.fire({
-            icon: "success",
-            title: `${result.message}`,
-            confirmButtonColor: `#2D85DE`,
-          });
-
-          setTimeout(() => {
-            location.reload();
-          }, 3000);
-        } else {
-          Swal.fire({
-            icon: "info",
-            text: `${result.message}`,
-            confirmButtonColor: "#2D85DE",
-          });
-        }
-      })
-      .catch((err) => console.log("Error: ", err));
-  }
-}
-
-function getCategoryList() {
-  const getSpin = document.querySelector(".pagemodal");
-  getSpin.style.display = "block";
-
-  const showItem = document.querySelector("admin");
-
-  const getToken = localStorage.getItem("admin");
-  const myToken = JSON.parse(getToken);
-  const token = myToken.token;
-
-  const dashHeader = new Headers();
-  dashHeader.append("Authorization", `Bearer ${token}`);
-
-  const dashMethod = {
-    method: "GET",
-    headers: dashHeader,
-  };
-
-  let data = [];
-
-  const url =
-    "https://pluralcodesandbox.com/yorubalearning/api/admin/category_list";
-
-  fetch(url, dashMethod)
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
-      if (result.length === 0) {
-        showItem.innerHTML = "No category Found";
-        getSpin.style.display = "none";
-      } else {
-        result.map((item) => {
-          data += `
-        <div class+ "search-card">
-          <img src= ${item.image} alt= "image">
-          <p class= "mt-3">${item.name}</p>
-            <div class= "text-right">
-            <button class= "update-button"
-            onclick= "modalBox(${item.id})">update</button>
-            <button class= "delete-button"
-            onclick= "delCat(${item.id})"> delete</button>
-              </div>
-        </div>
-        `;
-          showItem.innerHTML = data;
-          getSpin.style.display = "none";
-        });
-      }
-    })
-    .catch((error) => console.log("error", error));
-}
+// function modalBox(){}
 
 let globalld;
 
-function modalBox(catId, name) {
+function modalBox(catId) {
   globalId = catId;
   console.log(name);
   const showModal = document.getElementById("my-modal3");
@@ -630,59 +437,69 @@ function closeModal3() {
   showModal.style.display = "none";
 }
 
-function updateCategory(event) {
-  event.preventDefault();
+// function updateCategory(event) {
+//   event.preventDefault();
 
-  const getSpin = document.getElementById("updateName").value;
-  const catImage = document.getElementById("updateImage").files[0];
+//   const getSpin = document.getElementById("updateName").value;
+//   const catImage = document.getElementById("updateImage").files[0];
 
-  if (catName === "") {
-    Swal.fire({
-      icon: "info",
-      text: "All fields Required!",
-      confirmButtonColor: "#2D85DE",
-    });
-    getSpin.style.display = "none";
-  } else {
-    const getToken = localStorage.getItem("admin");
-    const myToken = JSON.parse(getToken);
-    const token = mytoken.token;
+//   if (catName === "") {
+//     Swal.fire({
+//       icon: "info",
+//       text: "All fields Required!",
+//       confirmButtonColor: "#2D85DE",
+//     });
+//     getSpin.style.display = "none";
+//   } else {
+//     const getToken = localStorage.getItem("admin");
+//     const myToken = JSON.parse(getToken);
+//     const token = mytoken.token;
 
-    const catData = new FormData();
-    catData.append("name", catName);
-    catData.append("image", catImage);
-    catData.append("category_id", globalId);
+//     const catData = new FormData();
+//     catData.append("name", catName);
+//     catData.append("image", catImage);
+//     catData.append("category_id", globalId);
 
-    const dashMethod = {
-      method: "POST",
-      headers: dashHeader,
-      body: catData,
-    };
+//     const dashMethod = {
+//       method: "POST",
+//       headers: dashHeader,
+//       body: catData,
+//     };
 
-    const url =
-      "https://pluralcodesandbox.com/yorubalearning/api/admin/update_category";
+//     const url =
+//       "https://pluralcodesandbox.com/yorubalearning/api/admin/update_category";
 
-    fetch(url, dashMethod)
-      .then((respond) => response.json())
-      .then((result) => {
-        console.log(result);
-        if (result.status === "success") {
-          Swal.fire({
-            icon: "success",
-            text: `${result.message}`,
-            confirmButtonColor: "#2D85DE",
-          });
-          setTimeout(() => {
-            location.reload();
-          }, 3000);
-        } else {
-          Swal.fire({
-            icon: "info",
-            text: `${result.message}`,
-            confirmButtonColor: "#2D85DE",
-          });
-        }
-      })
-      .catch((error) => console.log("error", error));
-  }
+//     fetch(url, dashMethod)
+//       .then((respond) => response.json())
+//       .then((result) => {
+//         console.log(result);
+//         if (result.status === "success") {
+//           Swal.fire({
+//             icon: "success",
+//             text: `${result.message}`,
+//             confirmButtonColor: "#2D85DE",
+//           });
+//           setTimeout(() => {
+//             location.reload();
+//           }, 3000);
+//         } else {
+//           Swal.fire({
+//             icon: "info",
+//             text: `${result.message}`,
+//             confirmButtonColor: "#2D85DE",
+//           });
+//         }
+//       })
+//       .catch((error) => console.log("error", error));
+//   }
+// }
+
+
+function gotoLoginPage(event) {
+  location.href  = "index.html"
+}
+
+function logout() {
+  localStorage.clear();
+  location.href = "index.html";
 }
