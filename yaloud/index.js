@@ -15,7 +15,12 @@ function signUp(event) {
 
   //checking for validation
 
-  if (getName === "" || getEmail === "" || getPassword === "" || getConfirmPassword === "") {
+  if (
+    getName === "" ||
+    getEmail === "" ||
+    getPassword === "" ||
+    getConfirmPassword === ""
+  ) {
     Swal.fire({
       icon: "info",
       text: "All Fields are Required!",
@@ -241,7 +246,7 @@ function studentModal(event) {
     })
     .catch((error) => console.log("error", error));
 }
-function closeDashModal() {
+function closeModal3() {
   const openModal = document.getElementById("dash-modal");
   openModal.style.display = "none";
 }
@@ -344,7 +349,6 @@ function createCategory(event) {
   }
 }
 function getCategoryList() {
-
   const getSpin = document.querySelector(".pagemodal");
   getSpin.style.display = "block";
 
@@ -437,66 +441,65 @@ function closeModal3() {
   showModal.style.display = "none";
 }
 
-// function updateCategory(event) {
-//   event.preventDefault();
+function updateCategory(event) {
+  event.preventDefault();
 
-//   const getSpin = document.getElementById("updateName").value;
-//   const catImage = document.getElementById("updateImage").files[0];
+  const getSpin = document.getElementById("updateName").value;
+  const catImage = document.getElementById("updateImage").files[0];
 
-//   if (catName === "") {
-//     Swal.fire({
-//       icon: "info",
-//       text: "All fields Required!",
-//       confirmButtonColor: "#2D85DE",
-//     });
-//     getSpin.style.display = "none";
-//   } else {
-//     const getToken = localStorage.getItem("admin");
-//     const myToken = JSON.parse(getToken);
-//     const token = mytoken.token;
+  if (catName === "") {
+    Swal.fire({
+      icon: "info",
+      text: "All fields Required!",
+      confirmButtonColor: "#2D85DE",
+    });
+    getSpin.style.display = "none";
+  } else {
+    const getToken = localStorage.getItem("admin");
+    const myToken = JSON.parse(getToken);
+    const token = mytoken.token;
 
-//     const catData = new FormData();
-//     catData.append("name", catName);
-//     catData.append("image", catImage);
-//     catData.append("category_id", globalId);
+    const catData = new FormData();
+    catData.append("name", catName);
+    catData.append("image", catImage);
+    catData.append("category_id", globalId);
 
-//     const dashMethod = {
-//       method: "POST",
-//       headers: dashHeader,
-//       body: catData,
-//     };
+    const dashMethod = {
+      method: "POST",
+      headers: dashHeader,
+      body: catData,
+    };
 
-//     const url =
-//       "https://pluralcodesandbox.com/yorubalearning/api/admin/update_category";
+    const url =
+      "https://pluralcodesandbox.com/yorubalearning/api/admin/update_category";
 
-//     fetch(url, dashMethod)
-//       .then((respond) => response.json())
-//       .then((result) => {
-//         console.log(result);
-//         if (result.status === "success") {
-//           Swal.fire({
-//             icon: "success",
-//             text: `${result.message}`,
-//             confirmButtonColor: "#2D85DE",
-//           });
-//           setTimeout(() => {
-//             location.reload();
-//           }, 3000);
-//         } else {
-//           Swal.fire({
-//             icon: "info",
-//             text: `${result.message}`,
-//             confirmButtonColor: "#2D85DE",
-//           });
-//         }
-//       })
-//       .catch((error) => console.log("error", error));
-//   }
-// }
-
+    fetch(url, dashMethod)
+      .then((respond) => response.json())
+      .then((result) => {
+        console.log(result);
+        if (result.status === "success") {
+          Swal.fire({
+            icon: "success",
+            text: `${result.message}`,
+            confirmButtonColor: "#2D85DE",
+          });
+          setTimeout(() => {
+            location.reload();
+          }, 3000);
+        } else {
+          Swal.fire({
+            icon: "info",
+            text: `${result.message}`,
+            confirmButtonColor: "#2D85DE",
+          });
+        }
+      })
+      .catch((error) => console.log("error", error));
+  }
+}
 
 function gotoLoginPage(event) {
-  location.href  = "index.html"
+  location.href = "index.html";
 }
 
 function logout() {
